@@ -7,7 +7,7 @@ import 'dotenv/config';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const roles = ['ADMIN', 'EDITOR'];
+const roles = ['ADMIN3', 'EDITOR10'];
 const SESSION_TIMEOUT_MS = 60 * 60 * 1000;
 
 const AUTH_DIR = path.resolve(__dirname, '../playwright/.auth');
@@ -15,7 +15,7 @@ const AUTH_DIR = path.resolve(__dirname, '../playwright/.auth');
 for (const role of roles) {
   setup(`Login check for ${role}`, async ({ page }) => {
     const user = process.env[`USER_${role}`];
-    const pass = process.env[`PASS_${role}`];
+    const pass = process.env.PASS;
     const domain = process.env.BASE_URL;
 
     const fileName = `${role.toLowerCase()}_${user?.replace(/[^a-z0-9]/gi, '_')}.json`;

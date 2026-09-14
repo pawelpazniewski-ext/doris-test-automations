@@ -51,12 +51,13 @@ Use plain text values without quotes.
 BASE_URL=https://your-org-name--sandbox.lightning.force.com/one/one.app
 
 ##Admin
-USER_ADMIN=adminLogin
-PASS_ADMIN=adminPassword
+USER_ADMIN3=adminLogin
 
 ##Editor
-USER_EDITOR=eidtorLogin
-PASS_EDITOR=editorPassword
+USER_EDITOR10=eidtorLogin
+
+##Password the same for all users
+PASS=editorPassword
 
 ### 👥 Multi-User Testing Strategy
 

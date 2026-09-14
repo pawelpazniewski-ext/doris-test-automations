@@ -4,7 +4,7 @@ import { createDocumentData } from '../src/pages/models/documentInfo.model.js';
 
 test.describe('Master Label Lifecycle', () => {
   test.beforeEach(async ({ page, loginAs, homePage }) => {
-    await loginAs('admin');
+    await loginAs('admin3');
     await page.goto('/ui/');
     await expect(homePage.navbarBrand).toBeVisible();
     await homePage.selectMenuItem('Library').click();
@@ -26,7 +26,7 @@ test.describe('Master Label Lifecycle', () => {
     });
 
     await test.step('Switch to Editor and approve document', async () => {
-      await docInfoPage.switchUser('EDITOR');
+      await docInfoPage.switchUser('EDITOR10');
       await homePage.searchDocumentToApprove();
       await docInfoPage.approveOrRejectDocument('Approved');
       await docInfoPage.checkDocStatusAfterApprovalProcess('Internally Approved');
@@ -48,7 +48,7 @@ test.describe('Master Label Lifecycle', () => {
     });
 
     await test.step('Switch to Editor and approve document', async () => {
-      await docInfoPage.switchUser('EDITOR');
+      await docInfoPage.switchUser('EDITOR10');
       await homePage.searchDocumentToApprove();
       await docInfoPage.approveOrRejectDocument('Not Approved');
       await docInfoPage.checkDocStatusAfterApprovalProcess('Rejected');

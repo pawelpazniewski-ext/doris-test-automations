@@ -23,9 +23,9 @@ export abstract class BasePage {
     return this.page.getByText('Dismiss');
   }
 
-  public async switchUser(role: 'ADMIN' | 'EDITOR' | 'ADMIN4' | 'EDITOR7'): Promise<void> {
+  public async switchUser(role: 'ADMIN3' | 'EDITOR10' | 'ADMIN4' | 'EDITOR7'): Promise<void> {
     const user = process.env[`USER_${role}`];
-    const pass = process.env[`PASS_${role}`];
+    const pass = process.env.PASS;
     const domain = process.env.BASE_URL;
 
     if (!user || !pass) {

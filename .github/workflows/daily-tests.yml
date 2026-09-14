@@ -49,10 +49,9 @@ jobs:
       - name: Run Tests
         env:
           FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-          USER_ADMIN: ${{ secrets.ADMIN_LOGIN }}
-          PASS_ADMIN: ${{ secrets.ADMIN_PASSWORD }}
-          USER_EDITOR: ${{ secrets.EDITOR_LOGIN }}
-          PASS_EDITOR: ${{ secrets.EDITOR_PASSWORD }}
+          USER_ADMIN3: ${{ secrets.USER_ADMIN3 }}
+          USER_EDITOR10: ${{ secrets.USER_EDITOR10 }}
+          PASS: ${{ secrets.PASS }}
           BASE_URL: ${{ secrets.BASE_URL }}
         run: npx playwright test --workers=2
 

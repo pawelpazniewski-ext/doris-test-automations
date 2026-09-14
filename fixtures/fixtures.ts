@@ -19,7 +19,7 @@ const getStoragePath = (role: string, userEmail: string | undefined) => {
 };
 
 type MyFixtures = {
-  loginAs: (role: 'admin' | 'editor') => Promise<void>;
+  loginAs: (role: 'admin3' | 'editor10') => Promise<void>;
   homePage: HomePage;
   docInfoPage: DocInfoPage;
   templatePage: TemplatePage;
@@ -31,8 +31,8 @@ type MyFixtures = {
 
 export const test = base.extend<MyFixtures>({
   loginAs: async ({ page }, use) => {
-    const loginFn = async (role: 'admin' | 'editor') => {
-      const email = role === 'admin' ? process.env.USER_ADMIN : process.env.USER_EDITOR;
+    const loginFn = async (role: 'admin3' | 'editor10') => {
+      const email = role === 'admin3' ? process.env.USER_ADMIN3 : process.env.USER_EDITOR10;
       const storageState = getStoragePath(role, email);
 
       const auth = JSON.parse(await fs.readFile(storageState, 'utf8'));
