@@ -19,7 +19,7 @@ export class Utils {
     const testTitle = testInfo.title;
     const timestamp = Date.now();
     const safeTestName = `${testTitle.replace(/[^a-z0-9]/gi, '_')}_${timestamp}`;
-    const tempDir = path.resolve(__dirname, '../../temp_files');
+    const tempDir = path.resolve(__dirname, '../temp_files');
 
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir, { recursive: true });

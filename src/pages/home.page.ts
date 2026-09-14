@@ -13,7 +13,7 @@ export class HomePage extends BasePage {
     return this.page.locator('#navbarBrand');
   }
   get createDocumentBtn(): Locator {
-    return this.page.getByRole('button', { name: 'Create (Ctrl + Shift + C)' });
+    return this.page.getByRole('button', { name: /^Create \(/ });
   }
   get createDocDialog(): Locator {
     return this.page.locator('[role="dialog"]');
@@ -38,7 +38,7 @@ export class HomePage extends BasePage {
   }
 
   private documentHeader(docName: string): Locator {
-    return this.header(`${docName}`, true);
+    return this.link(`${docName}`, false);
   }
 
   private availableTaskRow(recordType: string): Locator {

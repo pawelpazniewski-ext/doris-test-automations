@@ -73,7 +73,7 @@ export class EventPage extends BasePage {
 
   public async selectEventType(eventType: 'CMC Event' | 'Label Event' | 'Regulatory Event'): Promise<void> {
     await this.page.waitForLoadState();
-    await this.button('Create (Ctrl + Shift + C)').click();
+    await this.button(/^Create \(/).click();
     await expect(async () => {
       await this.selectEventTextbox.click();
     }).toPass({
