@@ -7,7 +7,23 @@ export abstract class BasePage {
     this.page = page;
   }
 
-  public async switchUser(role: 'ADMIN' | 'EDITOR'): Promise<void> {
+  private formFieldRow(label: string): Locator {
+    return this.page.locator('.internal_objectFieldLayout').filter({ hasText: label });
+  }
+
+  private editableFormFieldRow(label: string): Locator {
+    return this.page.locator('.vv_field_row').filter({ hasText: label });
+  }
+
+  protected get searchInput(): Locator {
+    return this.page.getByRole('search');
+  }
+
+  private get dismissButton(): Locator {
+    return this.page.getByText('Dismiss');
+  }
+
+  public async switchUser(role: 'ADMIN' | 'EDITOR' | 'ADMIN4' | 'EDITOR7'): Promise<void> {
     const user = process.env[`USER_${role}`];
     const pass = process.env[`PASS_${role}`];
     const domain = process.env.BASE_URL;
@@ -32,6 +48,10 @@ export abstract class BasePage {
     await this.button('Log In').click();
     await this.page.waitForURL(/.*ui.*/, { waitUntil: 'networkidle', timeout: 60_000 });
     console.log(`Successfully switched and logged in as ${role}`);
+
+    if (expect(this.dismissButton.isVisible())) {
+      await this.dismissButton.click();
+    }
   }
 
   public async verifyVisibilityWithReload(locator: Locator, timeout = 15_000): Promise<void> {
@@ -48,9 +68,15 @@ export abstract class BasePage {
     });
   }
 
-  get searchInput(): Locator {
-    return this.page.getByRole('search');
+  public async closeTooltipAfterLogin() {
+    try {
+      await this.dismissButton.waitFor({ state: 'visible', timeout: 10000 });
+      await this.dismissButton.click();
+    } catch {
+      // continue
+    }
   }
+
   //#region fill forms
 
   public async fillFormByTemplate(formData: any, fields: any): Promise<void> {
@@ -61,17 +87,32 @@ export abstract class BasePage {
       if (!value) continue;
       console.log(`[DEBUG] Filling field: "${field.label}" (Type: ${field.type}) with value: "${value}"`);
 
-      if (field.type === 'value') {
-        await this.fillValueField(field.label, value);
-      } else if (field.type === 'radio') {
-        await this.checkRadio(field.label, value);
-      } else if (field.type === 'dropdown') {
-        await this.selectDropdownValue(field.label, value);
-      } else if (field.type === 'multiselect') {
-        await this.selectMultiselect(field.label, value);
-      } else {
-        console.log(`[DEBUG] Special search for object: ${field.objectName}`);
-        await this.fillSearchField(field.label, value, field.objectName);
+      switch (field.type) {
+        case 'value':
+          await this.fillValueField(field.label, value);
+          break;
+        case 'radio':
+          await this.checkRadio(field.label, value);
+          break;
+        case 'dropdown':
+          await this.selectDropdownValue(field.label, value);
+          break;
+        case 'multiselect':
+          await this.selectMultiselect(field.label, value);
+          break;
+        case 'searchbox':
+          await this.selectSearchboxValue(field.label, value);
+          break;
+        case 'lookup':
+          await this.selectLookupValue(field.label, value);
+          break;
+        case 'nativeRadio':
+          await this.checkNativeRadio(field.label, value);
+          break;
+        default:
+          console.log(`[DEBUG] Special search for object: ${field.objectName}`);
+          await this.fillSearchField(field.label, value, field.objectName);
+          break;
       }
 
       formFieldsStore.uiFields.set(field.key, value);
@@ -79,13 +120,17 @@ export abstract class BasePage {
   }
 
   protected async checkRadio(label: string, value: string): Promise<void> {
-    const fieldLocator = this.page.locator('.vv_field_row').filter({ hasText: label }).locator(`[data-corgix-internal="RADIO"]`).filter({ hasText: value });
+    const fieldLocator = this.formFieldRow(label).locator(`[data-corgix-internal="RADIO"]`).filter({ hasText: value });
     await fieldLocator.click();
     console.log(`[DEBUG] I fill field: ${label} with value: ${value}`);
   }
 
+  protected async checkNativeRadio(label: string, value: string): Promise<void> {
+    await this.editableFormFieldRow(label).getByText(value).click();
+  }
+
   protected async selectDropdownValue(label: string, value: string): Promise<void> {
-    const fieldLocator = this.page.locator('.vv_field_row').filter({ hasText: label }).locator(`[data-corgix-internal="INPUT"]`);
+    const fieldLocator = this.formFieldRow(label).locator(`[data-corgix-internal="INPUT"]`);
     await fieldLocator.click();
     const optionLocator = this.page.locator('[role="option"]').filter({ hasText: value });
     await optionLocator.click();
@@ -93,7 +138,7 @@ export abstract class BasePage {
   }
 
   protected async selectMultiselect(label: string, value: string): Promise<void> {
-    const fieldLocator = this.page.locator('.vv_field_row').filter({ hasText: label }).locator('[data-corgix-internal="MULTI-SELECT"]');
+    const fieldLocator = this.formFieldRow(label).locator('[data-corgix-internal="MULTI-SELECT"]');
     await fieldLocator.click();
     const optionLocator = this.page.locator('[role="option"]').filter({ hasText: value });
     await optionLocator.click();
@@ -101,7 +146,7 @@ export abstract class BasePage {
   }
 
   protected async fillSearchField(label: string, value: string, objectName: string): Promise<void> {
-    const fieldLocator = this.page.locator('.vv_field_row').filter({ hasText: label }).locator(`[data-corgix-internal="INPUT"]`);
+    const fieldLocator = this.formFieldRow(label).locator(`[data-corgix-internal="INPUT"]`);
 
     await fieldLocator.click();
     await fieldLocator.locator('[title="More search options"]').click();
@@ -117,12 +162,29 @@ export abstract class BasePage {
   }
 
   protected async fillValueField(label: string, value: string): Promise<void> {
-    const fieldLocator = this.page.locator('.vv_field_row').filter({ hasText: label }).locator(`[data-corgix-internal="FIELD"]`);
+    const fieldLocator = this.formFieldRow(label).locator(`[data-corgix-internal="FIELD"]`);
     await fieldLocator.click();
     await fieldLocator.pressSequentially(value);
     console.log(`[DEBUG] I fill field: ${label} with value: ${value}`);
   }
 
+  protected async selectSearchboxValue(label: string, value: string): Promise<void> {
+    await this.formFieldRow(label).locator('input[type="search"], textarea').first().pressSequentially(value, { delay: 50 });
+    await this.option(value).first().click();
+  }
+
+  protected async selectLookupValue(label: string, value: string): Promise<void> {
+    const input = this.editableFormFieldRow(label).locator('input.multiItemSelectInput.ui-autocomplete-input').first();
+    await input.fill(value);
+    await this.page.locator('ul.ui-menu:visible').last().getByText(value, { exact: true }).first().click();
+  }
+
+  protected async selectDialogLookupValue(dialog: Locator, label: string, value?: string): Promise<void> {
+    if (!value) return;
+    const input = dialog.locator(`[data-vof-label="${label}"] input.multiItemSelectInput.ui-autocomplete-input`);
+    await input.fill(value);
+    await this.page.locator('ul.ui-menu:visible').getByText(value, { exact: true }).first().click();
+  }
   //#end region
   //#region elemens helpers
 
@@ -140,6 +202,7 @@ export abstract class BasePage {
   selectSubMenuItem = (value: string | RegExp, exact = false): Locator => this.page.locator('.vv-navbar-dropdown-menu').getByRole('menuitem', { name: value, exact });
   checkbox = (value: string | RegExp, exact = false): Locator => this.page.getByRole('checkbox', { name: value, exact });
   listItemLocator = (value: string | RegExp): Locator => this.page.getByRole('listitem').filter({ hasText: value });
+  dialog = (value: string | RegExp, exact = true): Locator => this.page.getByRole('dialog', { name: value, exact });
 }
 
 //#end region

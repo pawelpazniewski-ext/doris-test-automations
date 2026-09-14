@@ -1,4 +1,5 @@
 import { test as base, expect } from '@playwright/test';
+import { EventPage } from '../src/pages/event.page.js';
 import path from 'path';
 import { promises as fs } from 'fs';
 import { fileURLToPath } from 'url';
@@ -25,6 +26,7 @@ type MyFixtures = {
   applicationPage: ApplicationPage;
   applicationWizardPage: ApplicationWizardPage;
   regulatoryObjectivePage: RegulatoryObjectivePage;
+  eventPage: EventPage;
 };
 
 export const test = base.extend<MyFixtures>({
@@ -66,6 +68,10 @@ export const test = base.extend<MyFixtures>({
 
   regulatoryObjectivePage: async ({ page }, use) => {
     await use(new RegulatoryObjectivePage(page));
+  },
+
+  eventPage: async ({ page }, use) => {
+    await use(new EventPage(page));
   },
 });
 

@@ -44,7 +44,9 @@ for (const role of roles) {
     await page.locator('.vv-input-focused').waitFor({ state: 'visible' });
     await page.locator('.vv-input-focused').pressSequentially(pass!);
     await page.getByRole('button', { name: 'Log In' }).click();
-    await page.waitForURL(/.*ui.*/, { waitUntil: 'networkidle', timeout: 60_000 });
+
+    await page.waitForURL(new RegExp(`${domain}/ui/.*`), { waitUntil: 'networkidle', timeout: 60_000 });
+
     await page.context().storageState({ path: authFile });
     console.log(`[${role}] Session saved at: ${authFile}`);
   });
