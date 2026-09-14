@@ -52,11 +52,12 @@ BASE_URL=https://your-org-name--sandbox.lightning.force.com/one/one.app
 
 ##Admin
 USER_ADMIN=adminLogin
-PASS_ADMIN=adminPassword
 
 ##Editor
 USER_EDITOR=eidtorLogin
-PASS_EDITOR=editorPassword
+
+##Password the same for all users
+PASS=editorPassword
 
 ### 👥 Multi-User Testing Strategy
 
