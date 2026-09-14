@@ -41,6 +41,9 @@ export class HomePage extends BasePage {
     return this.header(`${docName}`, true);
   }
 
+  private availableTaskRow(recordType: string): Locator {
+    return this.link(recordType, false);
+  }
   // endregion
 
   @MethodLogger.logMethod
@@ -52,7 +55,7 @@ export class HomePage extends BasePage {
       throw new Error(`${docType} doesn't exist`);
     }
 
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState();
 
     await expect(async () => {
       const isVisible = await this.createDocDialog.isVisible();
@@ -60,7 +63,7 @@ export class HomePage extends BasePage {
       if (!isVisible) {
         await this.page.reload();
         await this.selectMenuItem('Library').click();
-        await this.page.waitForLoadState('networkidle');
+        await this.page.waitForLoadState();
         await this.createDocTemplateIcon.click();
       }
 
@@ -83,6 +86,14 @@ export class HomePage extends BasePage {
 
     await this.searchDocumentsInput.fill(docName);
     await this.documentHeader(docName).click();
+  }
+
+  public async openCreatedTask(recordUrl: string) {
+    if (!recordUrl) {
+      throw new Error('openCreatedTask failed: taskUrl is undefined or empty.');
+    }
+
+    await this.page.goto(recordUrl);
   }
 
   @MethodLogger.logMethod

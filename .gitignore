@@ -8,5 +8,4 @@ node_modules/
 /playwright/.auth/
 *.env
 .vault_session.json
-*temp_files*
-.temp/Doc_General_Lifecycle___Placeholder.txt
+*temp*

@@ -41,7 +41,7 @@ export class ApplicationPage extends BasePage {
   public async createAppIfNeeded(appNumber: string, expectedAppType: string): Promise<void> {
     await this.textbox('Search All Applications').fill(appNumber);
     await this.page.keyboard.press('Enter');
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState();
     await expect(this.spinnerIcon).not.toBeVisible();
     const rowCount = await this.gridItems().count();
 
@@ -53,9 +53,9 @@ export class ApplicationPage extends BasePage {
 
   @MethodLogger.logMethod
   public async enterAlreadyCreatedApp(appNumber: string): Promise<void> {
-    await this.textbox('Search Recent Applications').fill(appNumber);
+    await this.textbox('Search All Applications').fill(appNumber);
     await this.page.keyboard.press('Enter');
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState();
     await expect(this.spinnerIcon).not.toBeVisible();
     await this.link(appNumber).click();
     await this.getCurrentItemNumber('Regulatory Objectives');

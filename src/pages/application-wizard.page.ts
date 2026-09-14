@@ -85,7 +85,7 @@ export class ApplicationWizardPage extends BasePage {
     const fields: (ValueField | SearchField | RadioButton | DropDown | Multiselect)[] = [
       { key: 'regulatoryObjectiveName', label: 'Regulatory Objective Name', type: 'value' },
       { key: 'globalRegulatoryObjectiveType', label: 'Global Regulatory Objective Type', type: 'multiselect' },
-      { key: 'XEVMPDSubmissionNeeded', label: 'XEVMPD Submission Needed', type: 'dropdown' },
+      // { key: 'XEVMPDSubmissionNeeded', label: 'XEVMPD Submission Needed', type: 'dropdown' },
       { key: 'safetyRelated', label: 'Safety Related?', type: 'radio' },
       { key: 'labelingImpact', label: 'Labeling Impact', type: 'radio' },
       { key: 'worksharing', label: 'Worksharing', type: 'radio' },
@@ -101,7 +101,7 @@ export class ApplicationWizardPage extends BasePage {
     }
     await this.checkbox('Select All').check();
     await expect(this.checkbox('Select All')).toBeChecked();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState();
     await this.button('Next').last().click();
   }
 
@@ -119,7 +119,7 @@ export class ApplicationWizardPage extends BasePage {
 
     await expect(this.header('Registrations')).toBeVisible();
     await this.page.getByRole('checkbox').nth(1).click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState();
     await this.button('Next').last().click();
 
     for (const relationShip of this.WIZARD_RELATIONSHIPS) {
@@ -139,7 +139,7 @@ export class ApplicationWizardPage extends BasePage {
       }
 
       await this.page.getByRole('checkbox').filter({ visible: true }).last().click();
-      await this.page.waitForLoadState('networkidle');
+      await this.page.waitForLoadState();
       await this.button('Next').last().click();
     }
   }
