@@ -23,6 +23,9 @@ export class TemplatePage extends BasePage {
   get binocularsBtn(): Locator {
     return this.page.locator('.binoculars');
   }
+  get classifyNowRadio(): Locator {
+    return this.page.locator('#now');
+  }
   get templateListbox(): Locator {
     return this.page.locator(`ul[role='listbox']`);
   }
@@ -157,6 +160,7 @@ export class TemplatePage extends BasePage {
   }
 
   private async createNewDocType(DocumentTypeModel: DocumentTypeModel): Promise<void> {
+    await this.classifyNowRadio.check();
     await this.verifyVisibilityWithReload(this.binocularsBtn);
     await this.binocularsBtn.click();
     await this.typeSelect.click();

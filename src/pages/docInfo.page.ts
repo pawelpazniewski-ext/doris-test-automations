@@ -52,7 +52,7 @@ export class DocInfoPage extends BasePage {
   }
 
   private docVersionName(name: string, version: string): Locator {
-    return this.page.getByText(`${name} (${version})`);
+    return this.page.getByText(`${name}(${version})`);
   }
   // endregion
 

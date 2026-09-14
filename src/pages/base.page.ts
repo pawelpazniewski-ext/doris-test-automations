@@ -49,9 +49,9 @@ export abstract class BasePage {
     await this.page.waitForURL(/.*ui.*/, { waitUntil: 'networkidle', timeout: 60_000 });
     console.log(`Successfully switched and logged in as ${role}`);
 
-    if (expect(this.dismissButton.isVisible())) {
-      await this.dismissButton.click();
-    }
+    // if (expect(this.dismissButton.isVisible())) {
+    //   await this.dismissButton.click();
+    // }
   }
 
   public async verifyVisibilityWithReload(locator: Locator, timeout = 15_000): Promise<void> {
