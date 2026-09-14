@@ -51,10 +51,10 @@ Use plain text values without quotes.
 BASE_URL=https://your-org-name--sandbox.lightning.force.com/one/one.app
 
 ##Admin
-USER_ADMIN=adminLogin
+USER_ADMIN3=adminLogin
 
 ##Editor
-USER_EDITOR=eidtorLogin
+USER_EDITOR10=eidtorLogin
 
 ##Password the same for all users
 PASS=editorPassword

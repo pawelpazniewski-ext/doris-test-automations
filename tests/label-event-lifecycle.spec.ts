@@ -5,7 +5,7 @@ import { START_WORKFLOW, IAR_URL } from '../src/pages/models/workflow.model.js';
 
 test.describe('Label Event Lifecycle', () => {
   test.beforeEach(async ({ page, loginAs, homePage, eventPage }) => {
-    await loginAs('admin');
+    await loginAs('admin3');
     await page.goto('/ui/');
     await homePage.closeTooltipAfterLogin();
     await expect(homePage.navbarBrand).toBeVisible();

@@ -4,7 +4,7 @@ import { createSubmissionData } from '../src/pages/models/submission.model.js';
 
 test.describe('Submission wizard', () => {
   test.beforeEach(async ({ page, loginAs, homePage }) => {
-    await loginAs('editor');
+    await loginAs('editor10');
     await page.goto('/ui/');
     await expect(homePage.navbarBrand).toBeVisible();
     await homePage.selectMenuItem('Applications').click();

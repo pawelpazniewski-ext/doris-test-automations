@@ -6,7 +6,7 @@ import { Utils } from '../utils/utils.js';
 
 test.describe('Doc General Lifecycle', () => {
   test.beforeEach(async ({ page, loginAs, homePage }) => {
-    await loginAs('admin');
+    await loginAs('admin3');
     await page.goto('/ui/');
     await expect(homePage.navbarBrand).toBeVisible();
     await homePage.link('Library').click();
@@ -28,7 +28,7 @@ test.describe('Doc General Lifecycle', () => {
     });
 
     await test.step('Switch to Editor and approve document', async () => {
-      await docInfoPage.switchUser('EDITOR');
+      await docInfoPage.switchUser('EDITOR10');
       await homePage.searchDocumentToApprove();
       await docInfoPage.approveOrRejectDocument('Approved');
       await docInfoPage.checkDocStatusAfterApprovalProcess('Approved');
@@ -55,7 +55,7 @@ test.describe('Doc General Lifecycle', () => {
     });
 
     await test.step('Switch to Editor and approve document', async () => {
-      await docInfoPage.switchUser('EDITOR');
+      await docInfoPage.switchUser('EDITOR10');
       await homePage.searchDocumentToApprove();
       await docInfoPage.approveOrRejectDocument('Approved');
       await docInfoPage.checkDocStatusAfterApprovalProcess('Approved');
@@ -78,7 +78,7 @@ test.describe('Doc General Lifecycle', () => {
     });
 
     await test.step('Switch to Editor and approve document', async () => {
-      await docInfoPage.switchUser('EDITOR');
+      await docInfoPage.switchUser('EDITOR10');
       await homePage.searchDocumentToApprove();
       await docInfoPage.approveOrRejectDocument('Approved');
       await docInfoPage.checkDocStatusAfterApprovalProcess('Approved');
@@ -105,7 +105,7 @@ test.describe('Doc General Lifecycle', () => {
     });
 
     await test.step('Switch to Editor and reject document', async () => {
-      await docInfoPage.switchUser('EDITOR');
+      await docInfoPage.switchUser('EDITOR10');
       await homePage.searchDocumentToApprove();
       await docInfoPage.approveOrRejectDocument('Not Approved');
       await docInfoPage.checkDocStatusAfterApprovalProcess('Rejected');
@@ -128,7 +128,7 @@ test.describe('Doc General Lifecycle', () => {
     });
 
     await test.step('Switch to Editor and reject document', async () => {
-      await docInfoPage.switchUser('EDITOR');
+      await docInfoPage.switchUser('EDITOR10');
       await homePage.searchDocumentToApprove();
       await docInfoPage.approveOrRejectDocument('Not Approved');
       await docInfoPage.checkDocStatusAfterApprovalProcess('Rejected');
@@ -150,7 +150,7 @@ test.describe('Doc General Lifecycle', () => {
     });
 
     await test.step('Switch to Editor and reject', async () => {
-      await docInfoPage.switchUser('EDITOR');
+      await docInfoPage.switchUser('EDITOR10');
       await homePage.searchDocumentToApprove();
       await docInfoPage.approveOrRejectDocument('Not Approved');
       await docInfoPage.checkDocStatusAfterApprovalProcess('Rejected');
