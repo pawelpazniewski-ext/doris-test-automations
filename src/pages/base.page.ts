@@ -15,7 +15,7 @@ export abstract class BasePage {
     return this.page.locator('.vv_field_row').filter({ hasText: label });
   }
 
-  private get searchInput(): Locator {
+  protected get searchInput(): Locator {
     return this.page.getByRole('search');
   }
 
